@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FFXIV_Prio", "FFXIV_Prio\FFXIV_Prio.vcxproj", "{C1FECA7B-1DFF-451E-ACC8-9472E5FF7786}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1FECA7B-1DFF-451E-ACC8-9472E5FF7786}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C1FECA7B-1DFF-451E-ACC8-9472E5FF7786}.Debug|Win32.Build.0 = Debug|Win32
+		{C1FECA7B-1DFF-451E-ACC8-9472E5FF7786}.Release|Win32.ActiveCfg = Release|Win32
+		{C1FECA7B-1DFF-451E-ACC8-9472E5FF7786}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
