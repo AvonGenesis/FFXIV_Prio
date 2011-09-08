@@ -2,14 +2,15 @@
 #include "resource.h"
 #include <Commdlg.h>
 
+// Forward declare event statements
 BOOL WINAPI DlgProc( HWND  hDlg, UINT Msg, WPARAM Param1, LPARAM Param2 );
-bool running = true;
 
+bool running = true;
 int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdLine , int nCmdShow ){
-	// well just creating the dialog box
+	// Create dialog box IDD_DLG_MAIN
 	HWND hDialog = CreateDialog(hInstance , MAKEINTRESOURCE(IDD_DLG_MAIN) , NULL , DlgProc );
 	ShowWindow( hDialog , nCmdShow );
-	// then enter the message loop
+	// Enter msg loop to track events
 	MSG msg;
 	while(running){
 		// Get FFXIV Handle
@@ -23,7 +24,7 @@ int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdL
 		PROC_HANDLE = OpenProcess(PROCESS_ALL_ACCESS, false, PROC_ID);
 		//===========================================================
 
-		//while(GetMessage(&msg, NULL, 0, 0)){
+		// while(GetMessage(&msg, NULL, 0, 0)){
 		while (PeekMessage(&msg, hDialog,  0, 0, PM_REMOVE)){
 			if(!IsDialogMessage(hDialog , &msg )){
 				TranslateMessage(&msg);
@@ -31,6 +32,7 @@ int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdL
 			}
 		}
 		
+		// If FFXIV in focus
 		if (hwndFFXIV == GetForegroundWindow()){
 			LPSTR focus, priority;
 			GetDlgItemText(hDialog, IDC_FOCUS_STATUS, focus, sizeof(IDC_FOCUS_STATUS));
@@ -41,6 +43,8 @@ int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdL
 				SetDlgItemText(hDialog, IDC_PRIORITY_STATUS, "Above Normal Priority");
 			}
 		}
+
+		// FFXIV Not in focus
 		else {
 			LPSTR focus, priority;
 			GetDlgItemText(hDialog, IDC_FOCUS_STATUS, focus, sizeof(IDC_FOCUS_STATUS));
@@ -55,13 +59,16 @@ int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdL
 	return 0;
 }
 
+// Events
 BOOL WINAPI DlgProc( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam  ){
     switch(message){
+
 		case WM_CLOSE:
 			running = false;
 			EndDialog(hDlg, WM_CLOSE);
 			PostQuitMessage(WM_CLOSE);
 			break;
+
 		/*case WM_COMMAND:
             switch(LOWORD(wParam)){
 				case IDC_BUTTON1:
@@ -69,9 +76,9 @@ BOOL WINAPI DlgProc( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam  ){
 					PostQuitMessage(IDC_BUTTON1);
 					break;
 			}*/
+
 		default:
 			return FALSE;
     }
 	return TRUE;
-
 }
