@@ -1,0 +1,5 @@
+Final Fantasy XIV Priority Changer
+I made this for a friend that wanted to run FFXIV at a different priority.
+
+The game would always change back to normal priority, this will detect
+if its on normal and change it to the desired priority.
