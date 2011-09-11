@@ -1,14 +1,20 @@
 #include <windows.h>
 #include "resource.h"
 #include <Commdlg.h>
+#include "constants.h"
 
 // Forward declare event statements
 BOOL WINAPI DlgProc( HWND  hDlg, UINT Msg, WPARAM Param1, LPARAM Param2 );
 
 bool running = true;
+
+// Keep track of focusing and unfocusing for dialog text change
+LPSTR focus = '\0', priority = '\0';
+
 int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdLine , int nCmdShow ){
 	// Create dialog box IDD_DLG_MAIN
 	HWND hDialog = CreateDialog(hInstance , MAKEINTRESOURCE(IDD_DLG_MAIN) , NULL , DlgProc );
+	SetWindowText(hDialog, title);
 	ShowWindow( hDialog , nCmdShow );
 	// Enter msg loop to track events
 	MSG msg;
@@ -34,25 +40,23 @@ int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdL
 		
 		// If FFXIV in focus
 		if (hwndFFXIV == GetForegroundWindow()){
-			LPSTR focus, priority;
-			GetDlgItemText(hDialog, IDC_FOCUS_STATUS, focus, sizeof(IDC_FOCUS_STATUS));
-			GetDlgItemText(hDialog, IDC_PRIORITY_STATUS, priority, sizeof(IDC_PRIORITY_STATUS));
 			SetPriorityClass(PROC_HANDLE, ABOVE_NORMAL_PRIORITY_CLASS);
-			if ((sizeof(IDC_PRIORITY_STATUS) != sizeof(priority)) && (sizeof(IDC_FOCUS_STATUS) != sizeof(focus))){
+			if (focus != "Focused" && priority != "Above Normal Priority"){
 				SetDlgItemText(hDialog, IDC_FOCUS_STATUS, "Focused");
 				SetDlgItemText(hDialog, IDC_PRIORITY_STATUS, "Above Normal Priority");
+				focus = "Focused";
+				priority = "Above Normal Priority";
 			}
 		}
 
 		// FFXIV Not in focus
 		else {
-			LPSTR focus, priority;
-			GetDlgItemText(hDialog, IDC_FOCUS_STATUS, focus, sizeof(IDC_FOCUS_STATUS));
-			GetDlgItemText(hDialog, IDC_PRIORITY_STATUS, priority, sizeof(IDC_PRIORITY_STATUS));
 			SetPriorityClass(PROC_HANDLE, BELOW_NORMAL_PRIORITY_CLASS);
-			if ((sizeof(IDC_PRIORITY_STATUS) != sizeof(priority)) && (sizeof(IDC_FOCUS_STATUS) != sizeof(focus))){
+			if (focus != "Not Focused" && priority != "Below Normal Priority"){
 				SetDlgItemText(hDialog, IDC_FOCUS_STATUS, "Not Focused");
 				SetDlgItemText(hDialog, IDC_PRIORITY_STATUS, "Below Normal Priority");
+				focus = "Not Focused";
+				priority = "Below Normal Priority";
 			}
 		}
 	}
@@ -62,7 +66,6 @@ int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdL
 // Events
 BOOL WINAPI DlgProc( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam  ){
     switch(message){
-
 		case WM_CLOSE:
 			running = false;
 			EndDialog(hDlg, WM_CLOSE);
