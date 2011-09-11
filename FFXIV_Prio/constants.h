@@ -1,0 +1,1 @@
+LPCSTR title = "Final Fantasy Priority Tool v1.2";
