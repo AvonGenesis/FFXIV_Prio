@@ -3,21 +3,20 @@
 #include <Commdlg.h>
 #include "constants.h"
 
-// Forward declare event statements
 BOOL WINAPI DlgProc( HWND  hDlg, UINT Msg, WPARAM Param1, LPARAM Param2 );
 
 bool running = true;
 
 // Keep track of focusing and unfocusing for dialog text change
-LPSTR focus = '\0', priority = '\0';
+LPSTR priority = '\0';
 
 int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdLine , int nCmdShow ){
 	// Create dialog box IDD_DLG_MAIN
 	HWND hDialog = CreateDialog(hInstance , MAKEINTRESOURCE(IDD_DLG_MAIN) , NULL , DlgProc );
 	SetWindowText(hDialog, title);
 	ShowWindow( hDialog , nCmdShow );
-	// Enter msg loop to track events
 	MSG msg;
+	// Enter program loop
 	while(running){
 		// Get FFXIV Handle
 		//===========================================================
@@ -41,10 +40,9 @@ int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdL
 		// If FFXIV in focus
 		if (hwndFFXIV == GetForegroundWindow()){
 			SetPriorityClass(PROC_HANDLE, ABOVE_NORMAL_PRIORITY_CLASS);
-			if (focus != "Focused" && priority != "Above Normal Priority"){
+			if (priority != "Above Normal Priority"){
 				SetDlgItemText(hDialog, IDC_FOCUS_STATUS, "Focused");
 				SetDlgItemText(hDialog, IDC_PRIORITY_STATUS, "Above Normal Priority");
-				focus = "Focused";
 				priority = "Above Normal Priority";
 			}
 		}
@@ -52,10 +50,9 @@ int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdL
 		// FFXIV Not in focus
 		else {
 			SetPriorityClass(PROC_HANDLE, BELOW_NORMAL_PRIORITY_CLASS);
-			if (focus != "Not Focused" && priority != "Below Normal Priority"){
+			if (priority != "Below Normal Priority"){
 				SetDlgItemText(hDialog, IDC_FOCUS_STATUS, "Not Focused");
 				SetDlgItemText(hDialog, IDC_PRIORITY_STATUS, "Below Normal Priority");
-				focus = "Not Focused";
 				priority = "Below Normal Priority";
 			}
 		}
